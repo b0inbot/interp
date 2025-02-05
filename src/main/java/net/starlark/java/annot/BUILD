@@ -2,7 +2,7 @@ load("@rules_java//java:defs.bzl", "java_library")
 
 package(
     default_applicable_licenses = ["//:license"],
-    default_visibility = ["//src:__subpackages__"],
+    default_visibility = ["//:__subpackages__"],
 )
 
 filegroup(
@@ -24,7 +24,6 @@ java_library(
 java_library(
     name = "annot_sans_processor",
     srcs = glob(["*.java"]),
-    visibility = ["//src/main/java/net/starlark/java/annot/processor:__pkg__"],
     deps = [
         "//third_party:guava",
         "//third_party:jsr305",

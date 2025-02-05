@@ -2,7 +2,7 @@ load("@rules_java//java:defs.bzl", "java_library", "java_plugin")
 
 package(
     default_applicable_licenses = ["//:license"],
-    default_visibility = ["//src:__subpackages__"],
+    default_visibility = ["//:__subpackages__"],
 )
 
 filegroup(
@@ -15,7 +15,6 @@ filegroup(
 java_plugin(
     name = "processor",
     processor_class = "net.starlark.java.annot.processor.StarlarkMethodProcessor",
-    visibility = ["//src/main/java/net/starlark/java:starlark"],
     deps = [":processor_lib"],
 )
 
