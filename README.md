@@ -17,4 +17,4 @@ What is missing?
 
 What works:
 
- * bazel run examples:example01 -- 0 $PWD/examples/hello.sky
+ * bazel run examples:example01 -- $PWD/examples/hello.sky

@@ -66,7 +66,7 @@ public class Example01 {
   }
 
   public static void main(String[] args) {
-    String file = args[1];
+    String file = args[0];
     int exit = 0;
     try {
       exit = execute(ParserInput.readFile(file));
