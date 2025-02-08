@@ -6,13 +6,14 @@ exports_files([
 ])
 
 license(
-    name = "license",
+    name = "license-interp",
     package_name = "boinsoft/interp",
     copyright_notice = "Copyright © 2025 Boinsoft. All rights reserved.",
     license_kinds = [
         "@rules_license//licenses/spdx:Apache-2.0",
     ],
     license_text = "LICENSE",
+    visibility = ["//examples:__subpackages__"],
 )
 
 license(
@@ -22,7 +23,14 @@ license(
     license_kinds = [
         "@rules_license//licenses/spdx:Apache-2.0",
     ],
-    license_text = "LICENSE-bazel",
+    license_text = "LICENSE",
+)
+
+# for compat with BUILD files imported from the bazel repo
+alias(
+    name = "license",
+    actual = ":license-bazel",
+    visibility = ["//src:__subpackages__"],
 )
 
 alias(

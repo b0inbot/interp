@@ -3,7 +3,7 @@
 load("@rules_java//java:defs.bzl", "java_binary")
 
 package(
-    default_applicable_licenses = ["//:license"],
+    default_applicable_licenses = ["//:license-interp"],
     default_visibility = ["//:__subpackages__"],
 )
 
@@ -30,7 +30,7 @@ java_binary(
         "//src/main/java/net/starlark/java/annot:annot_sans_processor",
         "//src/main/java/net/starlark/java/eval",
         "//src/main/java/net/starlark/java/syntax",
+        "//third_party:guava",
         "//third_party:jsr305",
-	"//third_party:guava",
     ],
 )
