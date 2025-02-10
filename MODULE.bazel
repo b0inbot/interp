@@ -59,6 +59,11 @@ maven.install(
         "com.google.auto.value:auto-value:1.11.0",
         "com.google.auto.value:auto-value-annotations:1.11.0",
         "org.apache.velocity:velocity:1.7",
+        # The following jars are for testing.
+        # junit is not test only due to //src/java_tools/junitrunner/java/com/google/testing/junit/junit4:runner,
+        # and hamcrest is a dependency of junit.
+        "junit:junit:4.13.2",
+        "org.hamcrest:hamcrest-core:1.3",
         #TESTONLY - todo, move elsewhere
         "com.google.guava:guava-testlib:33.2.1-jre",
         "com.google.jimfs:jimfs:1.2",

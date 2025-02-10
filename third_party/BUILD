@@ -102,6 +102,21 @@ java_library(
     ],
 )
 
+# Not test_only due to //src/java_tools/junitrunner/java/com/google/testing/junit/junit4:runner
+java_library(
+    name = "junit4",
+    exports = [
+        "@boinsoft_interp_maven//:junit_junit",
+        "@boinsoft_interp_maven//:org_hamcrest_hamcrest_core",
+    ],
+)
+
+alias(
+    name = "guava-testlib",
+    testonly = 1,
+    actual = "@boinsoft_interp_maven//:com_google_guava_guava_testlib",
+)
+
 alias(
     name = "auto_common",
     actual = "@boinsoft_interp_maven//:com_google_auto_auto_common",

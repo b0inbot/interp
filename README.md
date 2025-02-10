@@ -10,12 +10,15 @@ use at your own peril.
 
 What is missing?
 
- * tests from upstream bazel repo
  * cpu profiler
  * Some possibly unused auto value plugins
  * everything under com.google.devtools.
 
 ## What works:
+
+### Testing
+
+`bazel test --config=starlark` will run everything under src/test/java/net/starlark
 
 ### The standalone repl
 
