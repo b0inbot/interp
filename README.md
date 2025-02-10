@@ -28,6 +28,7 @@ and
 
 `bazel build src/main/java/net/starlark/java/cmd:starlark_deploy.jar`
 
-### Example embedding
+### Example embeddings
 
 `bazel run examples:example01 -- $PWD/examples/hello.sky`
+`bazel run examples:example02 -- $PWD/examples/fetch.sky`

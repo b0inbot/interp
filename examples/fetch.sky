@@ -1,0 +1,13 @@
+http = importMod("http/1.0.0")
+futures = importMod("futures/1.0.0")
+
+client = http.Client()
+
+def run():
+    items = []
+    for x in range(0, 4):
+        items.append(client.AsyncGet("https://httpbin.org/delay/5"))
+
+    futures.All(items).Get()
+
+run()
