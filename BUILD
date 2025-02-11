@@ -13,7 +13,10 @@ license(
         "@rules_license//licenses/spdx:Apache-2.0",
     ],
     license_text = "LICENSE",
-    visibility = ["//examples:__subpackages__"],
+    visibility = [
+        "//examples:__subpackages__",
+        "//runtime:__subpackages__",
+    ],
 )
 
 license(
