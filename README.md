@@ -22,11 +22,11 @@ What is missing?
 
 ### The standalone repl
 
-`bazel run src/main/java/net/starlark/java/cmd:starlark`
+`bazel run --config=repl`
 
 and
 
-`bazel build src/main/java/net/starlark/java/cmd:starlark_deploy.jar`
+`bazel build --config=starlark`
 
 ### Example embeddings
 
