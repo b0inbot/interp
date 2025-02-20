@@ -13,6 +13,20 @@ filegroup(
     visibility = ["//:__subpackages__"],
 )
 
+java_library(
+    name = "common",
+    srcs = [
+        "InterpSystem.java",
+    ],
+    deps = [
+        "//src/main/java/net/starlark/java/annot:annot_sans_processor",
+        "//src/main/java/net/starlark/java/eval",
+        "//src/main/java/net/starlark/java/syntax",
+        "//third_party:guava",
+        "//third_party:jsr305",
+    ],
+)
+
 java_binary(
     name = "example01",
     srcs = ["Example01.java"],
@@ -27,6 +41,7 @@ java_binary(
     ],
     main_class = "boinsoft.interp.examples.Example01",
     deps = [
+        ":common",
         "//src/main/java/net/starlark/java/annot:annot_sans_processor",
         "//src/main/java/net/starlark/java/eval",
         "//src/main/java/net/starlark/java/syntax",
@@ -49,6 +64,7 @@ java_binary(
     ],
     main_class = "boinsoft.interp.examples.Example02",
     deps = [
+        ":common",
         "//src/main/java/net/starlark/java/annot:annot_sans_processor",
         "//src/main/java/net/starlark/java/eval",
         "//src/main/java/net/starlark/java/syntax",

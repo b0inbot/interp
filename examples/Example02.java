@@ -4,27 +4,14 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.http.*;
 import java.net.http.HttpClient;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import net.starlark.java.annot.Param;
 import net.starlark.java.annot.StarlarkBuiltin;
 import net.starlark.java.annot.StarlarkMethod;
-import net.starlark.java.eval.Dict;
-import net.starlark.java.eval.EvalException;
-import net.starlark.java.eval.Module;
-import net.starlark.java.eval.Mutability;
-import net.starlark.java.eval.Starlark;
-import net.starlark.java.eval.StarlarkCallable;
-import net.starlark.java.eval.StarlarkSemantics;
-import net.starlark.java.eval.StarlarkThread;
 import net.starlark.java.eval.StarlarkValue;
-import net.starlark.java.eval.Tuple;
-import net.starlark.java.syntax.FileOptions;
 import net.starlark.java.syntax.ParserInput;
-import net.starlark.java.syntax.SyntaxError;
 
 class CompletableFutureWrapper<T> implements StarlarkValue {
   java.util.concurrent.CompletableFuture<T> fut_;
@@ -35,7 +22,7 @@ class CompletableFutureWrapper<T> implements StarlarkValue {
 
   @StarlarkMethod(name = "Get")
   public void get() throws Exception {
-    //TODO: Return some optional type
+    // TODO: Return some optional type
     fut_.get();
   }
 }
@@ -67,6 +54,8 @@ class HttpClientWrapper implements StarlarkValue {
         CompletableFuture.supplyAsync(
             () -> {
               try {
+                String threadName = Thread.currentThread().getName();
+                System.out.println(String.format("[%s] GET %s", threadName, url));
                 get(url);
               } catch (Exception exn) {
                 return "";
@@ -78,7 +67,7 @@ class HttpClientWrapper implements StarlarkValue {
 }
 
 @StarlarkBuiltin(name = "http", category = "http", doc = "")
-class HTTP {
+class HTTP implements StarlarkValue {
 
   @StarlarkMethod(name = "Client")
   public HttpClientWrapper client() {
@@ -91,7 +80,7 @@ class HTTP {
 }
 
 @StarlarkBuiltin(name = "futures", category = "async", doc = "")
-class Futures {
+class Futures implements StarlarkValue {
   @StarlarkMethod(
       name = "All",
       parameters = {@Param(name = "items")})
@@ -105,66 +94,16 @@ class Futures {
   }
 }
 
-@StarlarkBuiltin(name = "import", category = "import", doc = "")
-class Import implements StarlarkCallable {
-
-  public Object call(StarlarkThread thread, Tuple args, Dict<String, Object> kwargs) {
-    if (args.get(0).equals("http/1.0.0")) {
-      return new HTTP();
-    }
-    if (args.get(0).equals("futures/1.0.0")) {
-      return new Futures();
-    }
-    return null;
-  }
-
-  public String getName() {
-    return "import";
-  }
-}
-
 public class Example02 {
-
-  private static final FileOptions OPTIONS =
-      FileOptions.DEFAULT.toBuilder().allowToplevelRebinding(true).loadBindsGlobally(true).build();
-
-  private static final Module module;
-  private static final StarlarkThread thread;
-
-  static {
-    Map<String, Object> predeclared = new HashMap<>();
-    predeclared.put("importMod", new Import());
-    module = Module.withPredeclared(StarlarkSemantics.DEFAULT, /* predeclared= */ predeclared);
-
-    Mutability mu = Mutability.create("interpreter");
-    thread = StarlarkThread.createTransient(mu, StarlarkSemantics.DEFAULT);
-    thread.setPrintHandler((th, msg) -> System.out.println(msg));
-  }
-
-  /** Execute a Starlark file. */
-  private static int execute(ParserInput input) {
-    try {
-      Starlark.execFile(input, OPTIONS, module, thread);
-      return 0;
-    } catch (SyntaxError.Exception ex) {
-      for (SyntaxError error : ex.errors()) {
-        System.err.println(error);
-      }
-      return 1;
-    } catch (EvalException ex) {
-      System.err.println(ex.getMessageWithStack());
-      return 1;
-    } catch (InterruptedException e) {
-      System.err.println("Interrupted");
-      return 1;
-    }
-  }
-
   public static void main(String[] args) {
+    InterpSystem system = new InterpSystem();
+    system.registerModule("http/1.0.0", () -> new HTTP());
+    system.registerModule("futures/1.0.0", () -> new Futures());
+
     String file = args[0];
     int exit = 0;
     try {
-      exit = execute(ParserInput.readFile(file));
+      exit = system.execute(ParserInput.readFile(file));
     } catch (IOException e) {
       // This results in such lame error messages as:
       // "Error reading a.star: java.nio.file.NoSuchFileException: a.star"

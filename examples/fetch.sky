@@ -1,5 +1,5 @@
-http = importMod("http/1.0.0")
-futures = importMod("futures/1.0.0")
+http = insys.Import("http/1.0.0")
+futures = insys.Import("futures/1.0.0")
 
 client = http.Client()
 

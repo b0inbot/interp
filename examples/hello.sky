@@ -1,1 +1,2 @@
+io = insys.Import("io")
 io.cprint(1 + 3)
